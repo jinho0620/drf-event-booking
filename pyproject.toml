@@ -1,0 +1,23 @@
+[project]
+name = "drf-event-booking"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "jinho0620",email = "jinhojo0620@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "django (==5.1.4)",
+    "djangorestframework (==3.15.2)",
+    "djangorestframework-simplejwt (==5.3.1)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "dj-rest-auth[with-social] (==6.0.0)",
+    "django-extensions==3.2.3",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
