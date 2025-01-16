@@ -15,7 +15,7 @@ class Event(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.TextField()
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now=True)
     category = models.CharField(max_length=20, choices=Category.choices)
     state = models.CharField(max_length=20, choices=State.choices)
 

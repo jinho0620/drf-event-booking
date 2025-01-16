@@ -59,6 +59,11 @@ THIRD_PARTY_APPS = [
 
 SELF_APPS = [
     'users',
+    'events',
+    'bookings',
+    'seats',
+    'seat_grades',
+    'slots',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + SELF_APPS
