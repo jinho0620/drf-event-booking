@@ -46,7 +46,8 @@ def event_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'DELETE':
-        event.delete()
+        event.open = False
+        event.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     elif request.method == 'PATCH':
