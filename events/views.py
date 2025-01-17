@@ -12,23 +12,30 @@ from django.db.models import Q
 # Create your views here.
 @api_view(['POST'])
 def create_event(request):
-    serializer = EventSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # print(request.user.is_staff)
+    # print(request.user.is_anonymous)
+    # print(dir(request.successful_authenticator))
+    # print(dir(request.auth))
+    # print(dir(request.authenticators))
+    if request.user.is_authenticated:
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 # 최신순 정렬
 # 오래된 순 정렬
 # 카테고리별
 # state : closed 인 것 제외
-# 기간별 필터 -> 추가 필요
+# 기간별 필터 -> slot에서 가능
 @api_view(['GET'])
 def events_list(request):
     ordering = request.GET.get('ordering')
     category = request.GET.get('category')
     if ordering == 'oldest':
-        # events = None
         if category is not None:
             events = Event.objects.filter(open=True).filter(category=category).order_by('created_at')
         else:
@@ -37,9 +44,9 @@ def events_list(request):
         return Response(serializer.data)
     elif ordering == 'newest' or ordering is None:
         if category is not None:
-            events = Event.objects.filter(open=True).filter(category=category).order_by('-created_at')
+            events = Event.objects.filter(open=True).filter(category=category)
         else:
-            events = Event.objects.filter(open=True).order_by('-created_at')
+            events = Event.objects.filter(open=True)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     else:
