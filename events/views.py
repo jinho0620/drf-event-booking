@@ -27,11 +27,11 @@ def create_event(request):
 def events_list(request):
     ordering = request.GET.get('ordering')
     if ordering == 'oldest':
-        events = Event.objects.order_by('created_at')
+        events = Event.objects.filter(open=True).order_by('created_at')
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     elif ordering == 'newest' or ordering is None:
-        events = Event.objects.order_by('-created_at')
+        events = Event.objects.filter(open=True).order_by('-created_at')
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     else:
@@ -62,12 +62,14 @@ def search_event(request):
     query = request.GET.get('query')
     print(query)
     if query is not None:
-        events = Event.objects.filter(Q(name__icontains=query)
-                                     | Q(description__icontains=query)
-                                     | Q(category__icontains=query))
+        events = (Event.objects
+                  .filter(Q(name__icontains=query)
+                          | Q(description__icontains=query)
+                          | Q(category__icontains=query))
+                  .filter(open=True))
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     else:
-        events = Event.objects.all()
+        events = Event.objects.filter(open=True)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
