@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from events.models import Event
 from events.serializers import EventSerializer
-
+from django.db.models import Q
 
 # Create your views here.
 @api_view(['POST'])
@@ -20,14 +20,17 @@ def create_event(request):
 
 # 최신순 정렬
 # 오래된 순 정렬
+# 카테고리별
+# state : closed 인 것 제외
+# 기간별 필터 -> 추가 필요
 @api_view(['GET'])
 def events_list(request):
-    query_param = request.GET.get('ordering')
-    if query_param == 'oldest':
+    ordering = request.GET.get('ordering')
+    if ordering == 'oldest':
         events = Event.objects.order_by('created_at')
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
-    elif query_param == 'newest' or query_param is None:
+    elif ordering == 'newest' or ordering is None:
         events = Event.objects.order_by('-created_at')
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
@@ -53,5 +56,18 @@ def event_detail(request, pk):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# 기간별 필터
 # 검색어 필터
+@api_view(['GET'])
+def search_event(request):
+    query = request.GET.get('query')
+    print(query)
+    if query is not None:
+        events = Event.objects.filter(Q(name__icontains=query)
+                                     | Q(description__icontains=query)
+                                     | Q(category__icontains=query))
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+    else:
+        events = Event.objects.all()
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
