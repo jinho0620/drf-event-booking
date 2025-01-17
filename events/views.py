@@ -26,12 +26,20 @@ def create_event(request):
 @api_view(['GET'])
 def events_list(request):
     ordering = request.GET.get('ordering')
+    category = request.GET.get('category')
     if ordering == 'oldest':
-        events = Event.objects.filter(open=True).order_by('created_at')
+        # events = None
+        if category is not None:
+            events = Event.objects.filter(open=True).filter(category=category).order_by('created_at')
+        else:
+            events = Event.objects.filter(open=True).order_by('created_at')
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     elif ordering == 'newest' or ordering is None:
-        events = Event.objects.filter(open=True).order_by('-created_at')
+        if category is not None:
+            events = Event.objects.filter(open=True).filter(category=category).order_by('-created_at')
+        else:
+            events = Event.objects.filter(open=True).order_by('-created_at')
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     else:
@@ -39,7 +47,7 @@ def events_list(request):
 
 @api_view(['GET', 'DELETE', 'PATCH'])
 def event_detail(request, pk):
-    event = get_object_or_404(Event, pk=pk) # should customize exception
+    event = get_object_or_404(Event, pk=pk, open=True) # should customize exception
 
     if request.method == 'GET':
         serializer = EventSerializer(event)

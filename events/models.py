@@ -13,7 +13,7 @@ class Event(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     category = models.CharField(max_length=20, choices=Category.choices)
-    open = models.BooleanField() # should change to boolean
+    open = models.BooleanField(default=False) # should change to boolean
 
     def __str__(self):
         return f'{self.name}'

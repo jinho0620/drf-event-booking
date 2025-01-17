@@ -7,7 +7,7 @@ from events.models import Event
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('name', 'description', 'category', 'state')
+        fields = ('name', 'description', 'category')
 
     def validate_category(self, value):
         categories = {'sports', 'play', 'musical', 'concert', 'orchestra'}
