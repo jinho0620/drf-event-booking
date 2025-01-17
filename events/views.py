@@ -18,12 +18,21 @@ def create_event(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# 최신순 정렬
+# 오래된 순 정렬
 @api_view(['GET'])
 def events_list(request):
-    events = Event.objects.all()
-    serializer = EventSerializer(events, many=True)
-    print(serializer.data)
-    return Response(serializer.data)
+    query_param = request.GET.get('ordering')
+    if query_param == 'oldest':
+        events = Event.objects.order_by('created_at')
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+    elif query_param == 'newest' or query_param is None:
+        events = Event.objects.order_by('-created_at')
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET', 'DELETE', 'PATCH'])
 def event_detail(request, pk):
@@ -43,3 +52,6 @@ def event_detail(request, pk):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# 기간별 필터
+# 검색어 필터

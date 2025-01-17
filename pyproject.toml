@@ -15,6 +15,7 @@ dependencies = [
     "psycopg2-binary (>=2.9.10,<3.0.0)",
     "dj-rest-auth[with-social] (==6.0.0)",
     "django-extensions==3.2.3",
+    "django-silk (>=5.3.2,<6.0.0)",
 ]
 
 

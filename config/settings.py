@@ -54,7 +54,8 @@ THIRD_PARTY_APPS = [
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'allauth.socialaccount.providers.google', # <- Support Login with Google
-    "django_extensions",
+    'django_extensions',
+    'silk'
 ]
 
 SELF_APPS = [
@@ -77,7 +78,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "allauth.account.middleware.AccountMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
