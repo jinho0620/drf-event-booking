@@ -15,11 +15,5 @@ class EventSerializer(serializers.ModelSerializer):
             return value
         raise ValidationError('The category should be one of the following. "sports", "play", "musical", "concert", "orchestra"')
 
-    def validate_state(self, value):
-        states = {'open', 'closed'}
-        if value in states:
-            return value
-        raise ValidationError('The states should be either "open" or "closed"')
-
 
 
