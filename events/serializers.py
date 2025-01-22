@@ -23,8 +23,8 @@ class EventSerializer(serializers.ModelSerializer):
             return data
         raise ValidationError('start_at should be before end_at')
 
-class MostBookedEventSerializer(serializers.ModelSerializer):
-    reservation_rate = serializers.DecimalField(5, 2, read_only=True)
+class EventIncludingBookingRateSerializer(serializers.ModelSerializer):
+    booking_rate = serializers.DecimalField(5, 2, read_only=True)
 
     class Meta:
         model = Event

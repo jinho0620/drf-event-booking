@@ -4,7 +4,6 @@ from rest_framework.exceptions import ValidationError
 from slots.models import Slot
 
 class SlotSerializer(serializers.ModelSerializer):
-    total_seats = serializers.IntegerField(read_only=True)
     reserved_seats = serializers.IntegerField(read_only=True)
 
     class Meta:
