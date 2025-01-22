@@ -55,7 +55,8 @@ THIRD_PARTY_APPS = [
     'dj_rest_auth.registration',
     'allauth.socialaccount.providers.google', # <- Support Login with Google
     'django_extensions',
-    'silk'
+    'silk',
+    'django_filters',
 ]
 
 SELF_APPS = [
@@ -63,7 +64,6 @@ SELF_APPS = [
     'events',
     'bookings',
     'seats',
-    'seat_grades',
     'slots',
 ]
 
@@ -197,7 +197,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 SIMPLE_JWT = {

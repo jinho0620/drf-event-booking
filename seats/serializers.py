@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from models import User
+from seats.models import Seat
 
-class UserSerializer(serializers.ModelSerializer):
+class SeatSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'username')
+        model = Seat
+        fields = ('number', 'grade', 'price', 'slot', 'booking', 'state')

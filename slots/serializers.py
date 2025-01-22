@@ -4,12 +4,16 @@ from rest_framework.exceptions import ValidationError
 from slots.models import Slot
 
 class SlotSerializer(serializers.ModelSerializer):
+    total_seats = serializers.IntegerField(read_only=True)
+    reserved_seats = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Slot
-        fields = ('start_at', 'end_at', 'location', 'address', 'event')
+        fields = ('start_at', 'end_at', 'location', 'address', 'event', 'total_seats', 'reserved_seats')
 
     def validate(self, data):
-        if data.get('start_at') <= data.get('end_at'):
+        if data.get('start_at') < data.get('end_at'):
             return data
         else:
             raise ValidationError("start_at should be before end_at")
+
