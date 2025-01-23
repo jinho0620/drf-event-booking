@@ -17,7 +17,11 @@ from django.db import transaction
 # Create your views here.
 
 # user_id 를 body로 하여 booking 추가 -> CreateModelMixin
-class BookingCreateAPIView(CreateAPIView):
+class BookingCreateAPIView(
+    CreateModelMixin,
+    RetrieveModelMixin,
+    DestroyModelMixin
+):
     serializer_class = BookingSerializer
     permission_classes = [IsAuthenticated]
 
@@ -62,4 +66,5 @@ class BookingByUserAPIVIew(ListAPIView):
     lookup_url_kwarg = 'user_id'
 
     def get_queryset(self):
-        return Booking.objects.filter(user=self.kwargs.get(self.lookup_url_kwarg)).prefetch_related('seats')
+        user_id = self.kwargs.get(self.lookup_url_kwarg)
+        return Booking.objects.filter(user=user_id).prefetch_related('seats')

@@ -15,7 +15,8 @@ class SlotViewSet(
     ListModelMixin,
     UpdateModelMixin,
     DestroyModelMixin,
-    viewsets.GenericViewSet):
+    viewsets.GenericViewSet
+):
     queryset = Slot.objects.all()
     serializer_class = SlotSerializer
     filter_backends = [DjangoFilterBackend]
