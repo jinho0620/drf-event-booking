@@ -8,7 +8,7 @@ class SlotSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Slot
-        fields = ('start_at', 'end_at', 'location', 'address', 'event', 'total_seats', 'reserved_seats')
+        fields = ('start_at', 'end_at', 'location', 'address', 'event', 'total_seats', 'reserved_seats', 'booking_rate')
 
     def validate(self, data):
         if data.get('start_at') < data.get('end_at'):
