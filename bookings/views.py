@@ -1,12 +1,8 @@
-from logging import raiseExceptions
-
-from django.core.serializers import serialize
-from django.shortcuts import render
-from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, RetrieveDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveDestroyAPIView
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 
 from bookings.serializers import BookingSerializer
 from bookings.models import Booking
@@ -14,13 +10,13 @@ from bookings.models import Booking
 from seats.models import Seat
 from slots.models import Slot
 from django.db import transaction
-# Create your views here.
 
 # user_id 를 body로 하여 booking 추가 -> CreateModelMixin
-class BookingCreateAPIView(
+class BookingAPIView(
     CreateModelMixin,
     RetrieveModelMixin,
-    DestroyModelMixin
+    DestroyModelMixin,
+    viewsets.GenericViewSet
 ):
     serializer_class = BookingSerializer
     permission_classes = [IsAuthenticated]
@@ -49,13 +45,6 @@ class BookingCreateAPIView(
             slot.save()
 
         return Response(data=BookingSerializer(booking).data, status=status.HTTP_201_CREATED)
-
-
-
-class BookingDeleteAPIView(RetrieveDestroyAPIView):
-    queryset = Booking.objects.all()
-    serializer_class = BookingSerializer
-    permission_classes = [IsAuthenticated]
 
 
 # user_id 기준 booking_id 가져오기 -> ListAPIView (여러 개)
