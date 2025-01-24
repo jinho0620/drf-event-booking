@@ -1,4 +1,10 @@
 from django.db import models
+# import os
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+# import django
+# django.setup()
+
 
 # Create your models here.
 class Event(models.Model):
@@ -21,5 +27,5 @@ class Event(models.Model):
         return f'{self.name}'
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ('-created_at',) # not applied when testing
         db_table = 'events'

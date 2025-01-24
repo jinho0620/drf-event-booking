@@ -11,7 +11,7 @@ class OpenFilterBackend(filters.BaseFilterBackend):
 # 캬테고리 및 기간 설정
 class EventFilterSet(django_filters.FilterSet):
     category = django_filters.CharFilter(field_name='category', lookup_expr='iexact')
-    start_at = django_filters.DateFromToRangeFilter(field_name='slots__start_at__date')
+    start_at = django_filters.DateFromToRangeFilter(field_name='slots__start_at__date') # start_at_before, start_at_after
 
     class Meta:
         model = Event
@@ -22,7 +22,7 @@ class EventFilterSet(django_filters.FilterSet):
         if self.request.query_params.get('start_at'):
             queryset = super().filter_queryset(queryset) # filtering the queryset from the view and BaseFilterBackend
             return queryset.distinct()
-        return queryset
+        return super().filter_queryset(queryset)
 
 # 예약률 기준 정렬
 class BookingRateOrderingFilter(filters.OrderingFilter):

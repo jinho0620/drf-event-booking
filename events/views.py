@@ -1,6 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.response import Response
+
+from events.exceptions import EventNotFoundException
 from events.filters import OpenFilterBackend, EventFilterSet, BookingRateOrderingFilter
 from events.models import Event
 from events.pagination import EventPagination
@@ -25,12 +28,13 @@ class EventViewSet(viewsets.ModelViewSet):
     filterset_class = EventFilterSet
     search_fields = ['name', 'description', 'category', 'slots__location', 'slots__address']
     ordering_fields = ['created_at'] # ?ordering=(-)created_at (- is an option)
+    ordering = ['-created_at'] # for testing, already exists in model
 
     def get_permissions(self):
-        if self.request.method == 'POST':
-            self.permission_classes = [IsAdminUser]
-        else:
+        if self.request.method == 'GET':
             self.permission_classes = [AllowAny]
+        else:
+            self.permission_classes = [IsAdminUser]
         return super().get_permissions()
 
     def get_serializer_class(self):
@@ -38,3 +42,12 @@ class EventViewSet(viewsets.ModelViewSet):
         if ordering in ['booking_rate', '-booking_rate']:
             self.serializer_class = EventIncludingBookingRateSerializer
         return super().get_serializer_class()
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     event_id = kwargs.get('pk')
+    #     try:
+    #         event = Event.objects.get(pk=event_id)
+    #     except Event.DoesNotExist:
+    #         raise EventNotFoundException()
+    #     serializer = super().get_serializer(event)
+    #     return Response(serializer.data)

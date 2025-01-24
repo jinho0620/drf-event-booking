@@ -11,12 +11,12 @@ dependencies = [
     "django (==5.1.4)",
     "djangorestframework (==3.15.2)",
     "djangorestframework-simplejwt (==5.3.1)",
-    "python-dotenv (>=1.0.1,<2.0.0)",
     "psycopg2-binary (>=2.9.10,<3.0.0)",
     "dj-rest-auth[with-social] (==6.0.0)",
     "django-extensions==3.2.3",
     "django-silk (>=5.3.2,<6.0.0)",
     "django-filter (>=24.3,<25.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
 ]
 
 

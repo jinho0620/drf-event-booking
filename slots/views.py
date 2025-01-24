@@ -22,8 +22,6 @@ class SlotViewSet(
     filter_backends = [DjangoFilterBackend]
     filterset_class = SlotFilterSet # 구현 필요
 
-
-
     def get_permissions(self):
         if self.request.method == 'GET':
             self.permission_classes = [AllowAny]
